@@ -71,4 +71,20 @@ def create_draft(to: str, subject: str, body: str):
     imap.append("Drafts", "\\Draft", None, msg.as_bytes())
     imap.logout()
 
-    return {"status": "draft_saved"}
+    
+    
+@app.post("/send")
+def send_email(to: str, subject: str, body: str):
+    msg = MIMEText(body)
+    msg["From"] = EMAIL
+    msg["To"] = to
+    msg["Subject"] = subject
+
+    smtp = smtplib.SMTP(SMTP_HOST, 587)
+    smtp.starttls()
+    smtp.login(EMAIL, PASSWORD)
+    smtp.sendmail(EMAIL, [to], msg.as_string())
+    smtp.quit()
+
+    return {"status": "email_sent"}
+ 
