@@ -1,0 +1,1 @@
+# aiembedded-email-mcp
